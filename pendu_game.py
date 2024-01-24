@@ -1,4 +1,6 @@
 # jeu du pendu
+import random
+
 # Pour gérer les lettres avec accents
 accent_letter = {
     'à': 'a', 'â': 'a', 'ä': 'a',
@@ -8,6 +10,26 @@ accent_letter = {
     'ù': 'u', 'û': 'u', 'ü': 'u',
     'ç': 'c'
 }
+
+
+# Fonction pour choisir un mot au hasard
+# avec un fichier au choix de l'utilisateur ou le fichier de base
+def choisir_mot():
+    print(
+        'Si vous voulez utiliser un fichier texte personel pour le jeu, \nAssurez vous que le fichier contienne un '
+        'mot par ligne séparé par un Entrée ')
+    fiche = input('Entrez le nom du fichier .txt sinon pressez Entrée:')
+    if fiche == '':
+        fiche = 'mots_pendu.txt'
+
+    # Ouverture du fichier en mode lecture
+    with open(fiche, 'r') as fichier:
+        contenu = fichier.read()
+    # Création d'une liste de mots en éliminant les saut de ligne
+    mots = contenu.split('\n')
+    # mot final random
+    mot = random.choice(mots)
+    return ''.join(accent_letter.get(char, char) for char in mot)
 
 
 # Fonction permettant l'affichage du nombre de vie et du pendu dans la console
@@ -35,7 +57,7 @@ def affichage_vie(vie):
 
 
 # Fonction pour afficher le mot en fonction des lettres trouvées
-# words et le mot désigné par le jeu et nblettre une liste des lettres trouvées par le joeur
+# words et le mot désigné par le jeu et nblettre une liste des lettres trouvées par le joueur
 def affichage_mot(mot, nblettre):
     mot_affiche = ['_' if lettre not in nblettre else lettre for lettre in mot]
     print(' '.join(mot_affiche))
