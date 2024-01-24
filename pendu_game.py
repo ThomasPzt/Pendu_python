@@ -32,6 +32,10 @@ def choisir_mot():
     return ''.join(accent_letter.get(char, char) for char in mot)
 
 
+def demande_lettre():
+    return input('Tapez une lettre minuscule :')
+
+
 # Fonction permettant l'affichage du nombre de vie et du pendu dans la console
 def affichage_vie(vie):
     if vie == 6:
