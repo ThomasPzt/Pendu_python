@@ -16,7 +16,7 @@ accent_letter = {
 # avec un fichier au choix de l'utilisateur ou le fichier de base
 def choisir_mot():
     print(
-        'Si vous voulez utiliser un fichier texte personel pour le jeu, \nAssurez vous que le fichier contienne un '
+        '\nSi vous voulez utiliser un fichier texte personel pour le jeu, \nAssurez vous que le fichier contienne un '
         'mot par ligne séparé par un Entrée ')
     fiche = input('Entrez le nom du fichier .txt sinon pressez Entrée:')
     if fiche == '':
@@ -39,25 +39,25 @@ def demande_lettre():
 # Fonction permettant l'affichage du nombre de vie et du pendu dans la console
 def affichage_vie(vie):
     if vie == 6:
-        print("Il vous reste 6 vies")
+        print("Il vous reste 6 vies\n")
     if vie == 5:
         print("---")
-        print("Il vous reste 5 vies")
+        print("Il vous reste 5 vies\n")
     if vie == 4:
         print(" |\n | \n |\n |\n---")
-        print("Il vous reste 4 vies")
+        print("Il vous reste 4 vies\n")
     if vie == 3:
         print(" ___ \n | \n |\n |\n |\n---")
-        print("Il vous reste 3 vies")
+        print("Il vous reste 3 vies\n")
     if vie == 2:
         print(" ___ \n | | \n |\o/ \n |\n |\n---")
-        print("Il vous reste 2 vies")
+        print("Il vous reste 2 vies\n")
     if vie == 1:
         print(" ___ \n | | \n |\o/ \n | | \n |\n---")
-        print("Il vous reste 1 vie")
+        print("Il vous reste 1 vie \n")
     if vie == 0:
         print(" ___ \n | | \n |\o/ \n | | \n |/ \ \n---")
-        print("Vous n'avez plus de vie, DEFAITE")
+        print("Vous n'avez plus de vie, DEFAITE \n")
 
 
 # Fonction pour afficher le mot en fonction des lettres trouvées
@@ -76,3 +76,21 @@ def win_or_lose(words, letter):
         if letter == words[i]:
             return 1
     return 0
+
+#############################################
+# Gestion du jeu avec les fonctions précédentes
+
+mot = choisir_mot()
+vie = 6
+lettre_trouvee = []
+while vie != 0 and len(lettre_trouvee) != len(mot):
+    affichage_mot(mot, lettre_trouvee)
+    lettre = demande_lettre()
+    if win_or_lose(mot, lettre):
+        lettre_trouvee.append(lettre)
+        print('La lettre tapée appartient bien au mot secret!\n')
+    else:
+        vie -= 1
+    affichage_vie(vie)
+
+print('victoire, vous avez trouvé le mot qui était :', mot)
