@@ -16,9 +16,33 @@ accent_letter = {
 # avec un fichier au choix de l'utilisateur ou le fichier de base
 def choisir_mot():
     print(
-        '\nSi vous voulez utiliser un fichier texte personel pour le jeu, \nAssurez vous que le fichier contienne un '
+        '\nSi vous voulez utiliser un fichier texte personnel pour le jeu, \nAssurez-vous que le fichier contienne un '
         'mot par ligne séparé par un Entrée ')
+
     fiche = input('Entrez le nom du fichier .txt sinon pressez Entrée:')
+
+    # si le joueur veut utiliser un fichier personnel
+    while fiche != '':
+        # on regarde l'extension
+        if not fiche.endswith('.txt'):
+            print("Erreur : Le fichier doit avoir une extension .txt.")
+        else:
+            try:
+                # Ouverture du fichier en mode lecture
+                with open(fiche, 'r') as fichier:
+                    contenu = fichier.read()
+
+                # Vérifier si le fichier contient au moins un caractère (un mot)
+                if contenu.strip():
+                    break  # Sortir de la boucle si le fichier est valide
+                else:
+                    print(f"Le fichier '{fiche}' est vide. Assurez-vous qu'il contienne des mots.")
+            except FileNotFoundError:
+                print(f"Fichier '{fiche}' introuvable. Veuillez réessayer.")
+
+        fiche = input('Entrez le nom du fichier .txt sinon pressez Entrée:')
+
+    # si il a pressé entrée on utilise le fichier par défaut
     if fiche == '':
         fiche = 'mots_pendu.txt'
 
@@ -33,8 +57,12 @@ def choisir_mot():
 
 
 def demande_lettre():
-    return input('Tapez une lettre minuscule :')
-
+    while True:
+        lettre = input('Tapez une lettre minuscule :')
+        if len(lettre) == 1 and lettre.isalpha() and lettre.islower():
+            return lettre
+        else:
+            print("Veuillez entrer une seule lettre minuscule.")
 
 # Fonction permettant l'affichage du nombre de vie et du pendu dans la console
 def affichage_vie(vie):
@@ -98,8 +126,12 @@ def jeu_running():
 
 
 def rejouer():
-    again = input('La partie est terminé, tapez 1 pour rejouer 0 sinon :')
-    return int(again)
+    while True:
+        again = input('La partie est terminée, tapez 1 pour rejouer, 0 sinon : ')
+        if again not in ('0', '1'):
+            print("Veuillez entrer 0 ou 1.")
+        else:
+            return int(again)
 
 
 #############################################
