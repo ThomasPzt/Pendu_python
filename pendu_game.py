@@ -77,20 +77,35 @@ def win_or_lose(words, letter):
             return 1
     return 0
 
+
+# fonction de jeu prennant en compte les fonctions précédentes
+def jeu_running():
+    mot = choisir_mot()
+    vie = 6
+    lettre_trouvee = []
+    while vie != 0 and len(lettre_trouvee) != len(mot):
+        affichage_mot(mot, lettre_trouvee)
+        lettre = demande_lettre()
+        if win_or_lose(mot, lettre):
+            lettre_trouvee.append(lettre)
+            print('La lettre tapée appartient bien au mot secret!\n')
+        else:
+            vie -= 1
+        affichage_vie(vie)
+    # si le joueur a trouvé le mot
+    if len(lettre_trouvee) == len(mot):
+        print('victoire, vous avez trouvé le mot qui était :', mot)
+
+
+def rejouer():
+    again = input('La partie est terminé, tapez 1 pour rejouer 0 sinon :')
+    return int(again)
+
+
 #############################################
 # Gestion du jeu avec les fonctions précédentes
 
-mot = choisir_mot()
-vie = 6
-lettre_trouvee = []
-while vie != 0 and len(lettre_trouvee) != len(mot):
-    affichage_mot(mot, lettre_trouvee)
-    lettre = demande_lettre()
-    if win_or_lose(mot, lettre):
-        lettre_trouvee.append(lettre)
-        print('La lettre tapée appartient bien au mot secret!\n')
-    else:
-        vie -= 1
-    affichage_vie(vie)
-
-print('victoire, vous avez trouvé le mot qui était :', mot)
+jeu = 1
+while jeu:
+    jeu_running()
+    jeu = rejouer()
