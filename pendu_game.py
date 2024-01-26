@@ -53,6 +53,9 @@ def choisir_mot():
     mots = contenu.split('\n')
     # mot final random
     mot = random.choice(mots)
+
+    # passage de toutes les lettres en minuscule
+    mot = mot.lower()
     return ''.join(accent_letter.get(char, char) for char in mot)
 
 
