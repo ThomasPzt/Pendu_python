@@ -64,6 +64,7 @@ def demande_lettre():
         else:
             print("Veuillez entrer une seule lettre minuscule.")
 
+
 # Fonction permettant l'affichage du nombre de vie et du pendu dans la console
 def affichage_vie(vie):
     if vie == 6:
@@ -106,25 +107,66 @@ def win_or_lose(words, letter):
     return 0
 
 
+# fonction pour donner un indice
+def indice(lettres_tapees, mot):
+    # listes des lettres de l'alphabet
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'
+
+    # on enlève les lettres déjà tapées
+    lettres_disponibles = [lettre for lettre in alphabet if lettre not in lettres_tapees]
+
+    # on enlève les lettres présentes dans le mot
+    lettres_disponibles = [lettre for lettre in lettres_disponibles if lettre not in mot]
+
+    # on prend une lettre aléatoire parmi les lettres disponibles
+    if lettres_disponibles:
+        lettre_indice = random.choice(lettres_disponibles)
+        print(f"Indice : La lettre '{lettre_indice}' n'est pas dans le mot.")
+
+
 # fonction de jeu prennant en compte les fonctions précédentes
 def jeu_running():
     mot = choisir_mot()
     vie = 6
     lettre_trouvee = []
-    while vie != 0 and len(lettre_trouvee) != len(mot):
+    lettre_fausse = []
+
+    print("Vie:", vie)
+    print("Lettres trouvées:", lettre_trouvee)
+    print("Mot:", mot)
+
+    # on joue tant que le joueur a pas 0 vie et que le mot n'est pas trouvé
+    # on doit comparer les lettres trouvées au nombre de lettres différentes dans le mot
+    while vie != 0 and len(lettre_trouvee) != len(set(mot)):
+        print(vie)
+        print(len(lettre_trouvee))
         affichage_mot(mot, lettre_trouvee)
         lettre = demande_lettre()
-        if win_or_lose(mot, lettre):
+
+        # on regarde si la lettre appartien au mot
+        # si oui on ajoute à la liste des lettres trovuées
+        # sinon on enlève une vie
+        if win_or_lose(mot, lettre) and lettre not in lettre_trouvee:
             lettre_trouvee.append(lettre)
             print('La lettre tapée appartient bien au mot secret!\n')
         else:
-            vie -= 1
+            # Vérifie si la lettre n'est pas déjà dans la liste des lettres fausses
+            if lettre not in lettre_fausse:
+                vie -= 1
+                lettre_fausse.append(lettre)
+            else:
+                print('Vous avez déjà tapé cette lettre incorrecte!\n')
+
         affichage_vie(vie)
+        # si il reste qu'une vie on donne un indice
+        if vie == 1:
+            indice(lettre_fausse, mot)
     # si le joueur a trouvé le mot
-    if len(lettre_trouvee) == len(mot):
-        print('victoire, vous avez trouvé le mot qui était :', mot)
+    if len(lettre_trouvee) == len(set(mot)):
+        print('Victoire, vous avez trouvé le mot qui était :', mot)
 
 
+# fonction pour demander au joeur si il veut rejouer ou quitter
 def rejouer():
     while True:
         again = input('La partie est terminée, tapez 1 pour rejouer, 0 sinon : ')
@@ -136,7 +178,6 @@ def rejouer():
 
 #############################################
 # Gestion du jeu avec les fonctions précédentes
-
 jeu = 1
 while jeu:
     jeu_running()
